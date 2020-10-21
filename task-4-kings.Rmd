@@ -10,10 +10,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-```{r read data, echo=FALSE, message=FALSE}
+```{r read data, echo=FALSE, message=FALSE, warning=FALSE}
 library(readr)
 library(tidyverse)
-library(gtsummary)
+library(tm)
+library(wordcloud)
+library(RColorBrewer)
 intro_survey <- read_csv("intro-survey.csv")
 ```
 
@@ -32,3 +34,30 @@ intro_survey %>%
 
 ```
 
+Word cloud of the familiarity of concepts
+
+```{r cloud generation, echo=FALSE, warning=FALSE, message=FALSE}
+toSpace <- content_transformer(function (x , pattern ) gsub(pattern, " ", x))
+corpus = intro_survey %>% 
+  select(general) %>%
+  unlist() %>%
+  as.vector() %>%
+  VectorSource() %>%
+  Corpus() %>%
+  tm_map(toSpace, "vs.") %>%
+  tm_map(toSpace, ",") %>%
+  TermDocumentMatrix() %>%
+  as.matrix() %>%
+  rowSums()
+
+freq_table <- data.frame(word = names(corpus),
+                         freq = corpus)
+set.seed(1)
+wordcloud(words = freq_table$word, 
+          freq = freq_table$freq, 
+          min.freq = 1,
+          max.words=200,
+          random.order=FALSE, 
+          rot.per=0.3, 
+          colors=brewer.pal(8, "Dark2"))
+```
