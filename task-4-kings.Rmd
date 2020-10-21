@@ -17,6 +17,7 @@ library(gtsummary)
 intro_survey <- read_csv("intro-survey.csv")
 ```
 
+# Descriptive stats of survey data
 ## Programming Languages
 The graph below shows the distribution of programming language skills by group. 
 ```{r programming languages, echo=FALSE}
