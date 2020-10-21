@@ -1,0 +1,34 @@
+---
+title: "task-4-kings"
+author: "Kings Group"
+date: "10/21/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r read data, echo=FALSE, message=FALSE}
+library(readr)
+library(tidyverse)
+library(gtsummary)
+intro_survey <- read_csv("intro-survey.csv")
+```
+
+# Descriptive stats of survey data
+## Programming Languages
+The graph below shows the distribution of programming language skills by group. 
+```{r programming languages, echo=FALSE}
+intro_survey %>% 
+  select(l_r:l_web, cgroup) %>% 
+  pivot_longer(-cgroup) %>% 
+  count(cgroup, name, value) %>% 
+  ggplot(aes(value, n, fill = cgroup)) +
+  geom_col() +
+  facet_grid(~ name) +
+  scale_fill_viridis_d()
+
+```
+

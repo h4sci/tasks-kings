@@ -1,3 +1,4 @@
 - Sam Levy
 - Clemens Grof
+- Dario
 - Guanghao You
